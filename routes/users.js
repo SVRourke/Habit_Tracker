@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
+const habits = require("./habits");
 const controller = require("../controllers/users");
 
 router.get("/", controller.index);
@@ -12,4 +13,5 @@ router
   .patch(controller.update)
   .delete(controller.delete);
 
+router.use("/:userId/habits", habits);
 module.exports = router;
