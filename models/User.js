@@ -9,3 +9,5 @@ const userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
+
+// TODO: REFACTOR as an ES6 Class with Schema.loadClass(classname)
