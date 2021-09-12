@@ -7,5 +7,5 @@ const userSchema = new Schema({
   //   habits: [{type: Schema.Types.ObjectId, ref "Habit"}]
 });
 
-const User = mongoose.Model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;
