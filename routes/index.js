@@ -10,4 +10,10 @@ router.get("/", function (req, res, next) {
 
 router.use("/users", users);
 
+// TODO: auth
+// TODO: habits
+// TODO: logs
+
+
+
 module.exports = router;
