@@ -5,8 +5,8 @@ const habitSchema = new Schema({
   habit: String,
   all_day: Boolean,
   goal_time: String,
+  category: String,
   user: { type: Schema.Types.ObjectId, ref: "User" },
-  //   category: {type: Schema.Types.ObjectId, ref: "Category"}
   //   logs: [{type: Schema.Types.ObjectId, ref: "Log"}]
 });
 
