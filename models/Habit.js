@@ -9,7 +9,7 @@ const habitSchema = new Schema({
   repetitions: Number, // default 1
   interval: String, // Day, week, month default Day
   user: { type: Schema.Types.ObjectId, ref: "User" },
-  //   logs: [{type: Schema.Types.ObjectId, ref: "Log"}]
+  logs: [{ type: Schema.Types.ObjectId, ref: "Log" }],
 });
 
 habitSchema.methods.isLate = function (cb) {
