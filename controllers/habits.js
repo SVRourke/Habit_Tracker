@@ -1,4 +1,5 @@
 const Habit = require("../models/Habit");
+const User = require("../models/User");
 
 exports.index = async (req, res) => {
   try {
@@ -10,9 +11,10 @@ exports.index = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  // add to user
   try {
     const habit = await Habit.create({ ...req.body, user: req.params.userId });
+    await User.update({ _id: req.params.userId }, { $push: { habits: habit } });
+
     res.send(habit);
   } catch (error) {
     res.send(error);
