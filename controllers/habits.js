@@ -4,6 +4,7 @@ const User = require("../models/User");
 exports.index = async (req, res) => {
   try {
     const habits = await Habit.find({ user: req.params.userId }).exec();
+    console.log("IS LATE? ", habits[0].isLate());
     res.send(habits);
   } catch (error) {
     res.send(error);
