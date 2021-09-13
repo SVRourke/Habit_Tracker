@@ -11,7 +11,7 @@ exports.index = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const user = await User.create({ name: req.body.user });
+    const user = await User.create({ name: req.body.name });
     res.send(user);
   } catch (error) {
     res.send(error);
