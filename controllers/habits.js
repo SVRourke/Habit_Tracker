@@ -42,6 +42,8 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
+  // TODO: remove from user
+  // TODO: remove all logs
   try {
     await Habit.findByIdAndDelete(req.params.habitId);
     res.send({ message: "success" });
