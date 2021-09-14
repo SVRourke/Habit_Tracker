@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 exports.index = async (req, res) => {
   try {
-    const logs = await Log.find({ habit_id: req.params.habitId }).exec();
+    const logs = await Log.find({ habit: req.params.habitId }).exec();
     res.send(logs);
   } catch (error) {
     res.send(error);
