@@ -1,5 +1,6 @@
 const Habit = require("../models/Habit");
 const User = require("../models/User");
+const Log = require("../models/Log");
 
 exports.index = async (req, res) => {
   try {
@@ -13,7 +14,7 @@ exports.index = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const habit = await Habit.create({ ...req.body, user: req.params.userId });
-    const user = await User.update(
+    const user = await User.updateOne(
       { _id: req.params.userId },
       { $push: { habits: habit } }
     );
@@ -42,11 +43,19 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  // TODO: remove from user
-  // TODO: remove all logs
+  const { userId, habitId } = req.params;
+
   try {
-    await Habit.findByIdAndDelete(req.params.habitId);
-    res.send({ message: "success" });
+    // TODO: remove from user
+    // const user = await User.findByIdAndUpdate(userId, {
+    //   $pull: { habit: habitId },
+    // });
+
+    // const habit = await Habit.findById(habitId);
+    const habit = await Habit.findById({ _id: req.params.habitId });
+    await habit.deleteOne();
+
+    res.send("hello");
   } catch (error) {
     res.status(500).send({ error });
   }
