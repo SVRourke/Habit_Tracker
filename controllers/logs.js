@@ -1,4 +1,4 @@
-const Habit = require("../models/Log");
+const Habit = require("../models/Habit");
 const Log = require("../models/Log");
 const User = require("../models/User");
 
@@ -14,15 +14,15 @@ exports.index = async (req, res) => {
 exports.create = async (req, res) => {
   const { userId, habitId } = req.params;
   try {
+    const habit = await Habit.findById(habitId).exec();
     const log = await Log.create({
       success: req.body.success,
       habit: habitId,
       user: userId,
+      late: habit.isLate(),
     });
-    const habit = await Habit.updateOne(
-      { _id: habitId },
-      { $push: { logs: log } }
-    );
+    habit.logs.push(log);
+    await habit.save();
     const user = await User.updateOne(
       { _id: userId },
       { $push: { logs: log } }
@@ -39,5 +39,17 @@ exports.update = async (req, res) => {
   res.send("Hello update");
 };
 exports.destroy = async (req, res) => {
-  res.send("Hello destroy");
+  const { userId, habitId, logId } = req.params;
+
+  const user = await User.findByIdAndUpdate(userId, {
+    $pull: { logs: logId },
+  }).exec();
+
+  const habit = await Habit.findByIdAndUpdate(habitId, {
+    $pull: { logs: logId },
+  }).exec();
+
+  await Log.findByIdAndDelete(logId);
+
+  res.send("success");
 };
