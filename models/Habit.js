@@ -1,5 +1,8 @@
+const { NotExtended } = require("http-errors");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const Log = require("./Log");
+const User = require("./User");
 
 const habitSchema = new Schema({
   habit: String,
@@ -23,6 +26,20 @@ habitSchema.methods.isLate = function (cb) {
     return false;
   } else return true;
 };
+
+// TODO: FIX
+habitSchema.pre("deleteOne", function (next) {
+  console.log("deleted", this.logs);
+  if (this && this.logs) {
+    Log.find({ habit: this._id }, (logs, err) => {
+      if (err) throw err;
+
+      console.log(logs);
+    });
+    console.log(logs);
+  }
+  next();
+});
 
 const currentTime = () => {
   return new Date()
