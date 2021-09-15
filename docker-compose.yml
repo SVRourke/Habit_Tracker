@@ -21,3 +21,11 @@ volumes:
 #   roles: [{role: "readWrite", db: "habits"}],
 #   passwordDigestor: "server"
 # })
+
+# use test
+# db.createUser({
+#   user: "testsuite",
+#   pwd: "tester",
+#   roles: [{role: "readWrite", db: "test"}],
+#   passwordDigestor: "server"
+# })
