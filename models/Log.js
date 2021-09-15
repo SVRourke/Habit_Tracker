@@ -12,7 +12,7 @@ const logSchema = new Schema(
 );
 
 logSchema.pre("remove", async function (next) {
-  console.log("REMOVEING LOG");
+  console.log("REMOVING LOG");
   await User.findByIdAndUpdate(this.user, { logs: { $pull: this._id } });
   next();
 });
