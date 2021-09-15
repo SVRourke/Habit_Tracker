@@ -11,5 +11,11 @@ const logSchema = new Schema(
   { timestamps: true }
 );
 
+logSchema.pre("remove", async function (next) {
+  console.log("REMOVEING LOG");
+  await User.findByIdAndUpdate(this.user, { logs: { $pull: this._id } });
+  next();
+});
+
 const Habit = mongoose.model("Log", logSchema);
 module.exports = Habit;
