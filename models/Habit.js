@@ -28,17 +28,13 @@ habitSchema.methods.isLate = function (cb) {
 };
 
 // TODO: FIX
-habitSchema.pre("deleteOne", function (next) {
-  console.log("deleted", this.logs);
-  if (this && this.logs) {
-    Log.find({ habit: this._id }, (logs, err) => {
-      if (err) throw err;
-
-      console.log(logs);
-    });
-    console.log(logs);
-  }
-  next();
+habitSchema.post("findOneAndDelete", async function (habit) {
+  // delete logs
+  const logs = await Log.find({ habit: habit._id });
+  logs.forEach((log) => log.remove());
+  const user = await User.find({ $in: { habits
+    : habit._id } });
+  console.log(user);
 });
 
 const currentTime = () => {
