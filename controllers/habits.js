@@ -51,9 +51,7 @@ exports.delete = async (req, res) => {
     //   $pull: { habit: habitId },
     // });
 
-    // const habit = await Habit.findById(habitId);
-    const habit = await Habit.findById({ _id: req.params.habitId });
-    await habit.deleteOne();
+    const habit = await Habit.findOneAndDelete({ _id: habitId });
 
     res.send("hello");
   } catch (error) {
