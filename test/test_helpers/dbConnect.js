@@ -8,12 +8,20 @@ const TEST_DB_CONFIG = {
 };
 
 exports.dbConnect = (cb) => {
-  console.log("opening connection");
   mongoose.connect(TEST_DB_URL, TEST_DB_CONFIG, () => {
-    console.log("connected to test DB");
+    console.log("connected");
     cb();
   });
 };
 exports.dbDisconnect = () => {
   mongoose.connection.close();
+};
+
+exports.clearDB = async () => {
+  const collections = mongoose.connection.collections;
+
+  for (const key in collections) {
+    const collection = collections[key];
+    await collection.deleteMany();
+  }
 };
