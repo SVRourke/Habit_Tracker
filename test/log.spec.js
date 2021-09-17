@@ -18,11 +18,7 @@
 //     // create testable records
 //   });
 
-//   it("valid user", async () => {
-//     const users = await User.find().exec();
-//     expect(users.length).to.be.eq(1);
-//   });
-
+// // removes it's self from user after delete
 //   //   it("requires a birthday");
 
 //   // runs once after the last test in this block
