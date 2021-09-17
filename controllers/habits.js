@@ -13,11 +13,9 @@ exports.index = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
-    const habit = await Habit.create({ ...req.body, user: req.params.userId });
-    const user = await User.updateOne(
-      { _id: req.params.userId },
-      { $push: { habits: habit } }
-    );
+    const user = await User.findById(req.params.userId);
+    const habit = newHabit({ ...req.body, user: req.params.userId });
+    await habit.save();
     res.send(habit);
   } catch (error) {
     res.send(error);
@@ -47,11 +45,9 @@ exports.delete = async (req, res) => {
 
   try {
     // TODO: remove from user
-    // const user = await User.findByIdAndUpdate(userId, {
-    //   $pull: { habit: habitId },
-    // });
+    const user = await User.findById(userId);
+    await user.dropHabit(habitId)
 
-    const habit = await Habit.findOneAndDelete({ _id: habitId });
 
     res.send("hello");
   } catch (error) {
