@@ -14,10 +14,7 @@ const Log = require("../models/Log");
 describe("Habit Model", async function () {
   before(async function () {
     dbConnect();
-  });
-
-  beforeEach(async function () {
-    const user = await User.create({ name: "Sam" });
+    const user = await User.create({ name: "Test User" });
     // const habit = await Habit.create({ habit: "pushups", user: user._id });
     const habit = await user.createHabit({
       habit: "pushups",
@@ -27,18 +24,28 @@ describe("Habit Model", async function () {
     await habit.createLog(true);
     await habit.createLog(true);
   });
+
+  // beforeEach(async function () {
+  // });
   // afterEach(async function () {
   //   clearDB();
   // });
-  it("can create & save a valid habit", async function () {
-    const user = await User.findOne({ name: "Sam" }).exec();
-    const habit = await Habit.findOne({ habit: "pushups" }).exec();
-    const logs = await Log.find({ habit: habit._id });
 
-    assert.equal(habit, habit);
+  it("removes habit reference", async function () {
+    const user = await User.findOne({ name: "Test User" }).exec();
+    await user.dropHabit(user.habits[0]);
+
+    assert.equal(user.habits.length, 0);
   });
 
-  after(async function () {
+  it("deletes associated logs", async function () {
+    const user = await User.findOne({ name: "Test User" }).exec();
+    const logs = await Log.find();
+
+    assert.equal(logs.length, 0);
+  });
+
+  after(function () {
     clearDB();
     dbDisconnect();
   });
