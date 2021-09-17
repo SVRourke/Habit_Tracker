@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const Log = require("./Log");
-const User = require("./User");
+// const User = require("./User");
 
 const habitSchema = new Schema({
   habit: String,
@@ -13,18 +13,22 @@ const habitSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User" },
   logs: [{ type: Schema.Types.ObjectId, ref: "Log" }],
 });
+
 // pre save to add to user's habits
-habitSchema.methods.createLogs = async function (success) {
+habitSchema.methods.createLog = async function (success) {
   try {
+    const late = this.isLate();
     const log = new Log({
       success: success,
       habit: this._id,
       user: this.user,
-      late: this.isLate,
+      late: late,
     });
     await log.save();
+
     this.logs.push(log._id);
     await this.save();
+
     return log;
   } catch (error) {
     return error;
@@ -42,8 +46,6 @@ habitSchema.methods.isLate = function (cb) {
     return false;
   } else return true;
 };
-
-// ? pre save add to user?
 
 habitSchema.pre(
   "findOneAndDelete",
