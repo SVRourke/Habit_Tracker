@@ -11,10 +11,9 @@ const logSchema = new Schema(
   { timestamps: true }
 );
 // pre save to add to user's logs
-logSchema.pre("remove", async function (next) {
-  console.log("REMOVING LOG");
-  await User.findByIdAndUpdate(this.user, { logs: { $pull: this._id } });
-  next();
+logSchema.pre("remove", { document: false, query: true }, async function () {
+  const log = await this.model.findOne(this.getFilter());
+  await User.findByIdAndUpdate(log.user, { $pull: { logs: log._id } });
 });
 
 const Habit = mongoose.model("Log", logSchema);
