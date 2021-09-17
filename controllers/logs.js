@@ -15,18 +15,13 @@ exports.create = async (req, res) => {
   const { userId, habitId } = req.params;
   try {
     const habit = await Habit.findById(habitId).exec();
-    const log = await Log.create({
-      success: req.body.success,
-      habit: habitId,
-      user: userId,
-      late: habit.isLate(),
-    });
-    habit.logs.push(log);
-    await habit.save();
-    const user = await User.updateOne(
-      { _id: userId },
-      { $push: { logs: log } }
-    );
+
+    const log = await habit.createLog(req.body.success);
+    // console.log(log);
+    // const user = await User.updateOne(
+    //   { _id: userId },
+    //   { $push: { logs: log } }
+    // );
     res.send(log);
   } catch (error) {
     res.send(error);
